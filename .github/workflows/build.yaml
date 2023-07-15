@@ -37,3 +37,22 @@ jobs:
           source: "deploy/docker-compose-ci.yaml,deploy/nginx.conf"
           target: "app"
           strip_components: 1
+      - name: Run compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd app
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
+      - name: Clean up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker system prune -f -a
