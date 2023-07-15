@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  front:
+    image: sermalenk/skypro-front:lesson-34
+    ports:
+      - 80:80
+    depends_on:
+      api:
+        condition: service_started
+  api:
+    build : .
+    env_file: .env
+    ports:
+    - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./core:/app/core/
+      - ./todolist:/app/todolist/
+  migrations:
+    build: .
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: python -m manage migrate
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
