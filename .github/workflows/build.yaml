@@ -34,6 +34,6 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: "deploy/*"
+          source: "deploy/docker-compose-ci.yaml,deploy/nginx.conf"
           target: "app"
           strip_components: 1
