@@ -13,21 +13,21 @@ services:
       collect_static:
         condition: service_completed_successfully
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
       - django_static:/usr/share/nginx/html/static/
 
 
 
   collect_static:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    env_file: ../.env
     command: python manage.py collectstatic -c --no-input
     volumes:
       - ./django_static:/app/static/
 
   api:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    env_file: ../.env
     depends_on:
       postgres:
         condition: service_healthy
@@ -36,7 +36,7 @@ services:
 
   migrations:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    env_file: ../.env
     depends_on:
       postgres:
         condition: service_healthy
