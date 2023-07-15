@@ -22,7 +22,6 @@ jobs:
 #          push: true
 #          tags: ${{ secrets.DOCKERHUB_USER }}/todolist:latest
 
-
   deploy:
 #    needs: build
     runs-on: ubuntu-latest
