@@ -16,8 +16,6 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - django_static:/usr/share/nginx/html/static/
 
-
-
   collect_static:
     image: ${DOCKERHUB_USER}/todolist:latest
     environment:
