@@ -19,7 +19,7 @@ services:
 
 
   collect_static:
-    image: evgeniy00/todolist:latest
+    image: ${DOCKERHUB_USER}/todolist:latest
     environment:
       SECRET_KEY: ${SECRET_KEY}
     command: python manage.py collectstatic -c --no-input
@@ -27,7 +27,7 @@ services:
       - ./django_static:/app/static/
 
   api:
-    image: evgeniy00/todolist:latest
+    image: ${DOCKERHUB_USER}/todolist:latest
     environment:
       SECRET_KEY: ${SECRET_KEY}
       DB_HOST: postgres
@@ -42,7 +42,7 @@ services:
         condition: service_completed_successfully
 
   migrations:
-    image: evgeniy00/todolist:latest
+    image: ${DOCKERHUB_USER}/todolist:latest
     environment:
       SECRET_KEY: ${SECRET_KEY}
       DB_HOST: postgres
