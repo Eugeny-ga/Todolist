@@ -20,14 +20,21 @@ services:
 
   collect_static:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
     command: python manage.py collectstatic -c --no-input
     volumes:
       - ./django_static:/app/static/
 
   api:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
@@ -36,7 +43,13 @@ services:
 
   migrations:
     image: ${DOCKERHUB_USER}/todolist:latest
-    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
@@ -49,7 +62,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     healthcheck:
-      test: pg_isready -U postgres
+      test: pg_isready -U ${DB_USER}
       interval: 10s
       timeout: 10s
       retries: 10
