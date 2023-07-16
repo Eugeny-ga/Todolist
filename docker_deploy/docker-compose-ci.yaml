@@ -13,7 +13,7 @@ services:
       collect_static:
         condition: service_completed_successfully
     volumes:
-      - ./docker_deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - django_static:/usr/share/nginx/html/static/
 
   collect_static:
@@ -22,7 +22,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
     command: python manage.py collectstatic -c --no-input
     volumes:
-      - ./django_static:/app/static/
+      - django_static:/app/static/
 
   api:
     image: ${DOCKERHUB_USER}/todolist:latest
