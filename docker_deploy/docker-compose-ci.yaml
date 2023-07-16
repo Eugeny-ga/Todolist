@@ -67,7 +67,7 @@ services:
       retries: 10
     restart: always
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
