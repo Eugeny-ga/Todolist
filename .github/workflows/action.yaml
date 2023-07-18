@@ -43,6 +43,8 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          VK_ID: ${{ secrets.VK_ID }}
+          VK_SECRET: ${{ secrets.VK_SECRET }}
         run: |
           mkdir deploy
           envsubst < docker_deploy/docker-compose-ci.yaml > deploy/docker-compose.yaml
