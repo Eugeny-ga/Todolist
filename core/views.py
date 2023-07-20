@@ -25,6 +25,7 @@ class LoginView(GenericAPIView):
         #Нужно вернуть все поля о юзере, а не только username и password
         return Response(ProfileSerializer(user).data)
 
+
 class ProfileView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
