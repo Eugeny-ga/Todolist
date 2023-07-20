@@ -56,7 +56,7 @@ class GoalCreateSerializer(serializers.ModelSerializer):
 class GoalSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
     category = GoalCategorySerializer
-    due_date = serializers.DateField(read_only=True)
+
 
     class Meta:
         model = Goal
