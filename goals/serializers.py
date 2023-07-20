@@ -82,7 +82,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = ProfileSerializer(read_only=True)
-    goal = serializers.PrimaryKeyRelatedField(read_only=True)
+    # goal = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Comment
