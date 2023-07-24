@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from rest_framework.pagination import LimitOffsetPagination
 
 from goals.models import Comment
+from goals.permissions import CommentPermission
 from goals.serializers import CommentCreateSerializer, CommentSerializer
 
 
@@ -23,13 +24,16 @@ class CommentListView(ListAPIView):
 
     # Вернуть список всех неудаленных (is_deleted) пользователя с запретом на удаление.
     def get_queryset(self):
-        return Comment.objects.select_related('user').filter(user=self.request.user)
+        return Comment.objects.filter(
+            goal__category__board__participants__user=self.request.user)
 
 
 class CommentDetailView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [CommentPermission]
     serializer_class = CommentSerializer
 
     # Вернуть список всех комментов данного пользователя
     def get_queryset(self):
-        return Comment.objects.select_related('user').filter(user=self.request.user)
+        return Comment.objects.select_related('user').filter(
+            goal__category__board__participants__user=self.request.user)
+

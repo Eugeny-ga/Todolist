@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   front:
-    image: sermalenk/skypro-front:lesson-36
+    image: sermalenk/skypro-front:lesson-37
     restart: on-failure
     ports:
       - "80:80"
@@ -17,7 +17,8 @@ services:
       - ./django_static:/usr/share/nginx/html/static/
 
   collect_static:
-    build: .
+    build:
+      context: .
     env_file: .env
     command: python manage.py collectstatic -c --no-input
     volumes:
@@ -40,7 +41,8 @@ services:
       - ./todolist:/app/todolist/
 
   migrations:
-    build: .
+    build:
+      context: .
     env_file: .env
     depends_on:
       postgres:

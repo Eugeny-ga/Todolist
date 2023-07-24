@@ -6,6 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 
 from goals.filters import GoalDateFilter
 from goals.models import Goal, GoalStatus
+from goals.permissions import GoalPermission
 from goals.serializers import GoalCreateSerializer, GoalSerializer
 
 
@@ -25,20 +26,16 @@ class GoalListView(ListAPIView):
 
     #Отдаем цели, у которых есть категория и которые не в архиве.
     def get_queryset(self):
-        return Goal.objects.select_related('user').filter(
-            user=self.request.user, category__is_deleted=False
+        return Goal.objects.filter(
+            category__board__participants__user=self.request.user,
+            category__is_deleted=False
         ).exclude(status=GoalStatus.archived)
 
 
 class GoalDetailView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [GoalPermission]
     serializer_class = GoalSerializer
-
-    # Вернуть список всех неархивированных целей данного пользователя.
-    def get_queryset(self):
-        return Goal.objects.filter(
-            user=self.request.user, category__is_deleted=False
-        ).exclude(status=GoalStatus.archived)
+    queryset = Goal.objects.exclude(status=GoalStatus.archived)
 
     # Вместо удаления цели, устанавливаем его статус "в архиве".
     def perform_destroy(self, instance):
