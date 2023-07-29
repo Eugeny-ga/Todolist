@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   front:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     restart: on-failure
     ports:
       - "80:80"
@@ -48,6 +48,18 @@ services:
       postgres:
         condition: service_healthy
     command: python manage.py migrate
+
+  bot:
+    build: .
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    volumes:
+      - ./bot:/app/bot/
+    command: python manage.py runbot
 
   postgres:
     image: postgres:15-alpine

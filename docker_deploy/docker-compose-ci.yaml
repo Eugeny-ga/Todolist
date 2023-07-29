@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   front:
-    image: sermalenk/skypro-front:lesson-37
+    image: sermalenk/skypro-front:lesson-38
     restart: on-failure
     ports:
       - "80:80"
@@ -40,6 +40,17 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+
+  bot:
+    image: ${DOCKERHUB_USER}/todolist:latest
+    environment:
+      TG_TOKEN: ${TG_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    command: python manage.py runbot
 
   migrations:
     image: ${DOCKERHUB_USER}/todolist:latest

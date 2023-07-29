@@ -25,4 +25,6 @@ urlpatterns = [
     path("oauth/", include("social_django.urls")),  # авторизация VK
 
     path("goals/", include("goals.urls")),
+
+    path('bot/', include('bot.urls')),
 ]
