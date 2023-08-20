@@ -30,8 +30,7 @@ class TgClient:
         else:
             logger.error(f'Bad request getUpdates.'
                          f'{url}'
-                         f'{response.status_code}'
-                         f'{response.json}')
+                         f'{self._token}')
 
     def send_message(self, chat_id: int, text: str, timeout: int = 10) -> SendMessageResponse:
         method = 'sendMessage'
