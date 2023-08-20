@@ -59,6 +59,7 @@ services:
         condition: service_completed_successfully
     volumes:
       - ./bot:/app/bot/
+    restart: always
     command: python manage.py runbot
 
   postgres:
