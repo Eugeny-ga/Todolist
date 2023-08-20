@@ -44,7 +44,7 @@ services:
   bot:
     image: ${DOCKERHUB_USER}/todolist:latest
     restart: always
-    env_file: /app/.env
+    env_file: home/evglava/app/.env
     depends_on:
       postgres:
         condition: service_healthy
