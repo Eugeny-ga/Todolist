@@ -28,7 +28,6 @@ class TgClient:
             data = response.json()
             return self._deserialize_tg_response(GetUpdatesResponse, data)
         else:
-            # logger.error(f'Bad request getUpdates, ', response.status_code)
             logger.error('Bad request getUpdates')
 
     def send_message(self, chat_id: int, text: str, timeout: int = 10) -> SendMessageResponse:
@@ -42,7 +41,6 @@ class TgClient:
             data = response.json()
             return self._deserialize_tg_response(SendMessageResponse, data)
         else:
-            # logger.warning(f'Bad request sendMessage, ', response.status_code)
             logger.warning('Bad request sendMessage')
 
     @staticmethod
