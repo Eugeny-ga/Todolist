@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'social_django',
     'core',
     'goals',
-    'bot'
+    'bot',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True

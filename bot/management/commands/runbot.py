@@ -15,7 +15,7 @@ class Command(BaseCommand):
         self.tg_client = TgClient(TG_TOKEN)
         self.users_data = {}
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         offset = 0
         try:
             while True:
@@ -27,13 +27,14 @@ class Command(BaseCommand):
         except Exception as e:
             raise CommandError(f'Произошла ошибка: {e}')
 
-    def handle_message(self, message: Message):
-        # Получаем id чата с юзером из response
+    def handle_message(self, message: Message) -> None:
+        # get the chat id with user from response
         chat_id = message.chat.id
-        # Получаем телеграм-юзера из бд или создаем его.
+        # get a telegram user from the database or create it.
         tg_user, _ = TgUser.objects.get_or_create(chat_id=chat_id)
 
-        if not tg_user.is_verified:  # если тг-юзер не связан с юзерами, авторизируем
+        # if tg-user is not associated with users, authorize it
+        if not tg_user.is_verified:
             tg_user.update_verification_code()
             message = f"Вы новый пользователь. Ваш код верификации - {tg_user.verification_code}"
             self.tg_client.send_message(chat_id=chat_id, text=message)
@@ -41,7 +42,8 @@ class Command(BaseCommand):
             self.handle_auth_user(tg_user=tg_user, message=message)
 
     def handle_auth_user(self, tg_user: TgUser, message: Message) -> None:
-        if message.text.startswith('/'):  # Обработка команд от пользователя
+        # Processing commands from the user
+        if message.text.startswith('/'):
             match message.text:
                 case '/goals':
                     text = get_goals_from_db(tg_user.user.id)
@@ -54,14 +56,14 @@ class Command(BaseCommand):
                 case _:
                     text = 'Неизвестная команда'
 
-        # Обработка ответов пользователя. Handlers: choose_category, create_goal
+        # Processing user responses. Handlers: choose_category, create_goal
         elif self.users_data.get(message.chat.id):
             next_handler = self.users_data[message.chat.id].get('next_handler')
             text = next_handler(
                 user_id=tg_user.user.id, chat_id=message.chat.id, message=message.text, users_data=self.users_data
             )
 
-        # Повторный вывод команд юзеру в случае некорректного запроса
+        # Re-output commands to user if the request is not correct
         else:
             text = (
                 'Список команд:\n'

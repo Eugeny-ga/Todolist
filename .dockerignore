@@ -3,6 +3,9 @@
 !bot
 !goals
 !core
+!tests
 !todolist
 !manage.py
 !requirements.txt
+!pytest.ini
+!README.txt
