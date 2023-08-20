@@ -10,7 +10,6 @@ T = TypeVar('T', bound=BaseModel)
 
 logger = logging.getLogger(__name__)
 
-
 class TgClient:
     def __init__(self, token):
         self._token = token
@@ -29,7 +28,8 @@ class TgClient:
             data = response.json()
             return self._deserialize_tg_response(GetUpdatesResponse, data)
         else:
-            logger.error(f'Bad request getUpdates, ', response.status_code)
+            # logger.error(f'Bad request getUpdates, ', response.status_code)
+            logger.error('Bad request getUpdates')
 
     def send_message(self, chat_id: int, text: str, timeout: int = 10) -> SendMessageResponse:
         method = 'sendMessage'
@@ -42,7 +42,8 @@ class TgClient:
             data = response.json()
             return self._deserialize_tg_response(SendMessageResponse, data)
         else:
-            logger.warning(f'Bad request sendMessage, ', response.status_code)
+            # logger.warning(f'Bad request sendMessage, ', response.status_code)
+            logger.warning('Bad request sendMessage')
 
     @staticmethod
     def _deserialize_tg_response(serializer_class: Type[T], data: dict) -> T:
