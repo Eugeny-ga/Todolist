@@ -160,7 +160,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-TG_TOKEN = os.getenv('TG_TOKEN')
+TG_TOKEN = os.getenv('TG_TOKEN', '6243861446:AAH2zphjPza-eFYQ3dw7AbcDYQEhHZed5K0')
 
 LOGGING = {
     'version': 1,
