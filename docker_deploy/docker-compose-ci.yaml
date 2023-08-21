@@ -46,6 +46,14 @@ services:
     restart: always
     environment:
       TG_TOKEN: ${TG_TOKEN}
+      SECRET_KEY: ${SECRET_KEY}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      VK_ID: ${VK_ID}
+      VK_SECRET: ${VK_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
