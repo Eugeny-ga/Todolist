@@ -44,7 +44,8 @@ services:
   bot:
     image: ${DOCKERHUB_USER}/todolist:latest
     restart: always
-    env_file: .env
+    environment:
+      TG_TOKEN: ${TG_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
